@@ -30,13 +30,9 @@ module.exports.register = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-<<<<<<< HEAD
 } //this is just the register controller , we have not used it yet
 
 
-=======
-}
->>>>>>> 374bf39a8641b682ab76b942e923016d92b2399c
 
 module.exports.login = async (req, res) => {
     try {
