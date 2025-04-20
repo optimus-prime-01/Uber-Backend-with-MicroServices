@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # API Gateway
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    container_name: gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - USER_SERVICE_URL=http://user-service:3001
+      - CAPTAIN_SERVICE_URL=http://captain-service:3002
+      - RIDE_SERVICE_URL=http://ride-service:3003
+    networks:
+      - app-network
+    depends_on:
+      - user
+      - captain
+      - ride
+
+  # User Service
+  user:
+    build:
+      context: ./user
+      dockerfile: Dockerfile
+    container_name: user
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - JWT_SECRET=${JWT_SECRET}
+      - MONGO_URL=${MONGO_URL}
+      - RABBIT_URL=${RABBIT_URL}
+      - BASE_URL=${BASE_URL}
+    networks:
+      - app-network
+
+  # Captain Service
+  captain:
+    build:
+      context: ./captain
+      dockerfile: Dockerfile
+    container_name: captain
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - JWT_SECRET=${JWT_SECRET}
+      - MONGO_URL=${MONGO_URL}
+      - RABBIT_URL=${RABBIT_URL}
+      - BASE_URL=${BASE_URL}
+    networks:
+      - app-network
+
+  # Ride Service
+  ride:
+    build:
+      context: ./ride
+      dockerfile: Dockerfile
+    container_name: ride
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - JWT_SECRET=${JWT_SECRET}
+      - MONGO_URL=${MONGO_URL}
+      - RABBIT_URL=${RABBIT_URL}
+      - BASE_URL=${BASE_URL}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge    

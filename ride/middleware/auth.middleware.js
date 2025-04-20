@@ -15,6 +15,7 @@ module.exports.userAuth = async (req, res, next) => {
                 Authorization: `Bearer ${token}`
             }
         })
+        Console.log("hello");
 
         const user = response.data;
 
